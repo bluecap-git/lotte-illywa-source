@@ -17,7 +17,7 @@ public class EDLBuilder {
 	 * @param pre ID 생성 접두사
 	 * @return 생성된 UUID
 	 */
-	private String createID(final String pre) {
+	public String createID(final String pre) {
 		final UUID uuid = UUID.randomUUID();
 
 		final String prefix = Optional.ofNullable(pre)
@@ -25,10 +25,8 @@ public class EDLBuilder {
 				.map(str -> String.format("%s-", pre))
 				.orElseGet(() -> StringUtils.EMPTY);
 
-
 		return String.format("%s%s", prefix, uuid.toString());
 	}
-
 
 	public EDL createEDL() {
 		return EDLBuilder.GLOVAL_EDL;

@@ -1,4 +1,6 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
-public class Clip {
+public abstract class Clip {
+
+
 }
