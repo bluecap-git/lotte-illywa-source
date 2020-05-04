@@ -1,9 +1,6 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Optional;
-import java.util.UUID;
+import com.bluecapsystem.lotte.illywa.edl.utils.IDGenerator;
 
 /**
  * EDL 을 생성 로드 하고
@@ -11,26 +8,50 @@ import java.util.UUID;
  */
 public class EDLBuilder {
 
-	private static EDL GLOVAL_EDL;
+	/** EDL 아이디 앞에 붙는 prefix 문자 */
+	private final static String PREFIX_EDL_ID = "EDL";
+
+	/** clip 아이디 앞에 붙는 prefix 문자 */
+	private final static String PREFIX_CLIP_ID = "CLP";
 
 	/**
-	 * @param pre ID 생성 접두사
-	 * @return 생성된 UUID
+	 * 새로우 EDL 을 생성 한다
+	 *
+	 * @return 새로 생성된 edl
 	 */
-	public String createID(final String pre) {
-		final UUID uuid = UUID.randomUUID();
-
-		final String prefix = Optional.ofNullable(pre)
-				.filter(StringUtils::isNotBlank)
-				.map(str -> String.format("%s-", pre))
-				.orElseGet(() -> StringUtils.EMPTY);
-
-		return String.format("%s%s", prefix, uuid.toString());
-	}
-
 	public EDL createEDL() {
-		return EDLBuilder.GLOVAL_EDL;
+		return new EDL(IDGenerator.createID(EDLBuilder.PREFIX_EDL_ID));
 	}
 
+	/**
+	 * create a new clip
+	 *
+	 * @param type     clip type
+	 * @param filePath clip target file path
+	 * @return created a new clip
+	 */
+	public Clip createClip(final ClipTypes type, final String filePath) {
+		Clip newClip = null;
+		switch (type) {
+			case Video:
+				newClip = createVideoClip(filePath);
+				break;
+			default:
+				throw new RuntimeException("Not supported clip type");
+		}
 
+		return newClip;
+	}
+
+	/**
+	 * video clip 을 생성 한다
+	 *
+	 * @param filePath 클립 대상 파일 경로
+	 * @return video clip 을 반환 한다
+	 */
+	private VideoClip createVideoClip(final String filePath) {
+		return new VideoClip(IDGenerator.createID(EDLBuilder.PREFIX_CLIP_ID), filePath);
+	}
+
+	
 }
