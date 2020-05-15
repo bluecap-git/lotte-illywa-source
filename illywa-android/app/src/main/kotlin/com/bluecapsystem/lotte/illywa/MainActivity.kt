@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bluecapsystem.lotte.illywa.edl.EDLBuilder
 import com.bluecapsystem.lotte.illywa.edl.utils.TimeUtils
 import com.bluecapsystem.lotte.illywa.sample.Sample
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,8 +27,6 @@ class MainActivity : AppCompatActivity() {
 
 
 		Log.d("matin", TimeUtils.toDuration(timecode.toString()).toString())
-
-		txt_message.text = edl.createID("matin")
 
 
 	}

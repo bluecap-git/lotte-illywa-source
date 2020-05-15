@@ -1,6 +1,8 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
-import java.util.List;
+import androidx.annotation.NonNull;
+import com.google.gson.annotations.Expose;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Contains video editing information
@@ -8,13 +10,20 @@ import java.util.List;
 public class EDL {
 
 	/** edl id */
+	@Expose
 	private String edlId;
 
 	/** tag information of media */
+	@Expose
 	private String tag;
 
 	/** list of clips be used */
-	private List<Clip> clips;
+	@Expose
+	private final ClipList clips;
+
+	/** list fo layers */
+	@Expose
+	private final LayerList layers;
 
 	/**
 	 * create a edl
@@ -22,6 +31,14 @@ public class EDL {
 	 * @param edlId set the edl id
 	 */
 	public EDL(final String edlId) {
+		clips = new ClipList();
+		layers = new LayerList();
+	}
+
+	@NonNull
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 	/**
@@ -40,7 +57,7 @@ public class EDL {
 
 	/**
 	 * @param tag edl 의 tag 정보
-	 * @return thsi
+	 * @return this
 	 */
 	public EDL setTag(final String tag) {
 		this.tag = tag;
@@ -50,7 +67,7 @@ public class EDL {
 	/**
 	 * @return edl 의 클립 목록
 	 */
-	public List<Clip> getClips() {
+	public ClipList getClips() {
 		return clips;
 	}
 
@@ -59,8 +76,20 @@ public class EDL {
 	 * clip 을 추가 한다
 	 *
 	 * @param clip
+	 * @return this
 	 */
-	public void AddClip(final Clip clip) {
+	public EDL addClip(final Clip clip) {
 		this.clips.add(clip);
+		return this;
+	}
+
+
+	/**
+	 * layer 목록을 가져온다
+	 *
+	 * @return layer 목록
+	 */
+	public LayerList getLayers() {
+		return layers;
 	}
 }

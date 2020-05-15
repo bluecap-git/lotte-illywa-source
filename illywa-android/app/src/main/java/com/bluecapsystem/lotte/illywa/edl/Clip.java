@@ -1,21 +1,30 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Map;
 
 public abstract class Clip {
 
+	/** clip 아이디 앞에 붙는 prefix 문자 */
+	protected final static String PREFIX_CLIP_ID = "CLP";
+
+	/** clip id */
+	@Expose
+	private String clipId;
+	
 	/** clip file path */
+	@Expose
 	private String filePath;
 
 	/** clip type */
+	@Expose
 	private ClipTypes type;
 
-	/** clip id */
-	private String clipId;
 
 	/** default construct */
-	public Clip() {
-	
+	public Clip(final String clipId) {
+		this.clipId = clipId;
 	}
 
 	/**

@@ -20,16 +20,35 @@ public class TimeUtils {
 
 
 	/**
-	 * timecode 를 duration 으로 변경 한다
+	 * timecode 를 long duration 으로 변경 한다
 	 *
 	 * @param timecode "HH:mm:ss.SSS" 형식의 time code
 	 * @return milliseconds duration
-	 * @throws Throwable string format exception
 	 */
-	public static Long toDuration(final String timecode) throws Throwable {
-		final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss.SSS");
-		fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
-		final Date dt = fmt.parse(timecode);
+	public static Long toLong(final String timecode) {
+		final Date dt;
+		try {
+			final SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss.SSS");
+			fmt.setTimeZone(TimeZone.getTimeZone("UTC"));
+			dt = fmt.parse(timecode);
+		} catch (final Throwable th) {
+			throw new RuntimeException("time format error", th);
+		}
 		return dt.getTime();
 	}
+
+
+	/**
+	 * 시간 사이 길이를 구한다
+	 *
+	 * @param start 시작 시간
+	 * @param end   종료 시간
+	 * @return 시간 길이
+	 */
+	public static String getDuration(final String start, final String end) {
+		final Long duration = TimeUtils.toLong(end) - TimeUtils.toLong(start);
+		return toTimeCode(duration);
+	}
+
+
 }
