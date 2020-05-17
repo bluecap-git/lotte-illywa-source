@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 		Log.d("matin", timecode.toString())
 
 
-		Log.d("matin", TimeUtils.toDuration(timecode.toString()).toString())
+		Log.d("matin", TimeUtils.toLong(timecode.toString()).toString())
 
 
 	}

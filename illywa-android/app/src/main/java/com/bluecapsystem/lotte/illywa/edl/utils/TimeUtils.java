@@ -8,6 +8,9 @@ import java.util.TimeZone;
 
 public class TimeUtils {
 
+	/** 기본 TC 값 설정 */
+	public static final String DEFAULT_TC = "00:00:00.000";
+
 	/**
 	 * duration 을 string 형 timecode 로 변경 한다
 	 *

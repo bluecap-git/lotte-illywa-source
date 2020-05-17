@@ -1,6 +1,7 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
 import com.bluecapsystem.lotte.illywa.edl.utils.IDGenerator;
+import com.bluecapsystem.lotte.illywa.edl.utils.TimeUtils;
 
 import java.util.Optional;
 
@@ -48,49 +49,17 @@ public class EDLBuilder {
 	}
 
 	/**
-	 * create a new clip
-	 *
-	 * @param type     clip type
-	 * @param filePath clip target file path
-	 * @param <T>      return clip type
-	 * @return created a new clip
-	 */
-	public <T extends Clip> T newClip(final ClipTypes type, final String filePath) {
-		T newClip = null;
-		switch (type) {
-			case Video:
-				newClip = (T) newVideoClip(filePath);
-				break;
-			case VideoImage:
-				newClip = (T) newVideoImageClip(filePath);
-				break;
-			case Audio:
-				newClip = (T) newAudioClip(filePath);
-				break;
-			case Subscript:
-				newClip = (T) newSubscriptClip(filePath);
-				break;
-			case Image:
-				newClip = (T) createImageClip(filePath);
-				break;
-			default:
-				throw new RuntimeException("Not supported clip type");
-		}
-		// final 객체로 바꾸기 위해서..
-		final T retClip = newClip;
-		return Optional.ofNullable(preCreatedListener) //
-				.map(event -> event.preClipCreated(retClip)) //
-				.orElse(newClip);
-	}
-
-	/**
 	 * {@link VideoClip} 을 생성 한다
 	 *
 	 * @param filePath 클립 파일 경로
 	 * @return {@link VideoClip} 을 반환 한다
 	 */
-	private VideoClip newVideoClip(final String filePath) {
-		return new VideoClip(filePath);
+	public VideoClip newVideoClip(final String filePath) {
+		final VideoClip clip = new VideoClip(filePath);
+		return Optional.ofNullable(preCreatedListener) //
+				.map(event -> event.preClipCreated(clip)) //
+				.orElse(clip);
+
 	}
 
 	/**
@@ -99,8 +68,11 @@ public class EDLBuilder {
 	 * @param filePath 클립 파일 경로
 	 * @return {@link AudioClip} 을 반환 한다
 	 */
-	private AudioClip newAudioClip(final String filePath) {
-		return new AudioClip(filePath);
+	public AudioClip newAudioClip(final String filePath) {
+		final AudioClip clip = new AudioClip(filePath);
+		return Optional.ofNullable(preCreatedListener) //
+				.map(event -> event.preClipCreated(clip)) //
+				.orElse(clip);
 	}
 
 	/**
@@ -109,8 +81,12 @@ public class EDLBuilder {
 	 * @param filePath 클립 파일 경로
 	 * @return {@link VideoImageClip} 을 반환 한다
 	 */
-	private VideoImageClip newVideoImageClip(final String filePath) {
-		return new VideoImageClip(filePath);
+	public VideoImageClip newVideoImageClip(final String filePath) {
+		final VideoImageClip clip = new VideoImageClip(filePath);
+		return Optional.ofNullable(preCreatedListener) //
+				.map(event -> event.preClipCreated(clip)) //
+				.orElse(clip);
+
 	}
 
 	/**
@@ -120,7 +96,10 @@ public class EDLBuilder {
 	 * @return {@link SubscriptClip} 을 반환 한다
 	 */
 	private SubscriptClip newSubscriptClip(final String filePath) {
-		return new SubscriptClip(filePath);
+		final SubscriptClip clip = new SubscriptClip(filePath);
+		return Optional.ofNullable(preCreatedListener) //
+				.map(event -> event.preClipCreated(clip)) //
+				.orElse(clip);
 	}
 
 	/**
@@ -130,7 +109,11 @@ public class EDLBuilder {
 	 * @return {@link ImageClip} 을 반환 한다
 	 */
 	private ImageClip createImageClip(final String filePath) {
-		return new ImageClip(filePath);
+		final ImageClip clip = new ImageClip(filePath);
+		return Optional.ofNullable(preCreatedListener) //
+				.map(event -> event.preClipCreated(clip)) //
+				.orElse(clip);
+
 	}
 
 	/**
@@ -151,6 +134,23 @@ public class EDLBuilder {
 
 		return (T) Optional.ofNullable(preCreatedListener) //
 				.map(event -> event.preMashupCreated(newMashup)) //
+				.orElse(newMashup);
+	}
+
+
+	public VideoMashup newVideoMashup( //
+			final VideoClip clip, final String start, final String end) {
+
+
+		final VideoMashup newMashup = new VideoMashup(clip);
+
+		newMashup.setClipStartTC(start);
+		newMashup.setClipEndTC(end);
+		newMashup.setStartTC("00:00:00.000");
+		newMashup.setEndTC(TimeUtils.getDuration(start, end));
+
+		return Optional.ofNullable(preCreatedListener) //
+				.map(event -> (VideoMashup) event.preMashupCreated(newMashup)) //
 				.orElse(newMashup);
 	}
 

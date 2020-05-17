@@ -1,8 +1,11 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
 import com.bluecapsystem.lotte.illywa.edl.utils.IDGenerator;
+import com.bluecapsystem.lotte.illywa.edl.utils.TimeUtils;
 import com.google.gson.annotations.Expose;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Optional;
 
 public class Layer {
 
@@ -18,28 +21,39 @@ public class Layer {
 	@Expose
 	private LayerTypes type;
 
-	/** 기본 기준 layer 여부 */
-	private Boolean isBasis;
-
-	/**
-	 * @param type    Layer 유형
-	 * @param isBasis 기본 Layer 여부
-	 */
-	public Layer(final LayerTypes type, final Boolean isBasis) {
-		this.layerId = IDGenerator.createID(Layer.PREFIX_ID);
-		this.type = type;
-	}
+	@Expose
+	private MashupList mashups;
 
 	/**
 	 * @param type Layer 유형
 	 */
 	public Layer(final LayerTypes type) {
-		this(type, false);
+		this.layerId = IDGenerator.createID(Layer.PREFIX_ID);
+		this.type = type;
 	}
 
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
+	}
+
+
+	/**
+	 * mashup 을 가장 뒤에 추가 한다
+	 *
+	 * @param mashup 추가 할 mashup
+	 * @return this
+	 */
+	public Layer addMashup(final Mashup mashup) {
+		final String startTC = Optional.of(this.mashups) //
+				.filter(m -> m.size() > 0) //
+				.flatMap(m -> {
+					return Optional.of(m.get(m.size() - 1).getEndTC());
+				}).orElse(TimeUtils.DEFAULT_TC);
+		mashup.offset(startTC);
+		this.mashups.add(mashup);
+
+		return this;
 	}
 
 	/**
@@ -56,14 +70,5 @@ public class Layer {
 		return type;
 	}
 
-	/**
-	 * 기준 레이어 여부 설정
-	 * 기준 레이어는 EDL 전체의 길이를 지정 하고, 삭제 할 수 없다
-	 *
-	 * @return 기본 Layer 여부
-	 */
-	public Boolean getBasis() {
-		return isBasis;
-	}
 
 }

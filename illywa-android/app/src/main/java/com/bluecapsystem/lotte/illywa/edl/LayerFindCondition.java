@@ -49,4 +49,23 @@ public class LayerFindCondition {
 
 		return predicates;
 	}
+
+
+	public String getLayerId() {
+		return layerId;
+	}
+
+	public LayerFindCondition setLayerId(final String layerId) {
+		this.layerId = layerId;
+		return this;
+	}
+
+	public Set<LayerTypes> getTypes() {
+		return types;
+	}
+
+	public LayerFindCondition setTypes(final Set<LayerTypes> types) {
+		this.types = types;
+		return this;
+	}
 }

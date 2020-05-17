@@ -35,7 +35,6 @@ public class LayerList extends ArrayList<Layer> {
 		for (final Predicate<Layer> p : predicateList) {
 			stream = stream.filter(p);
 		}
-
 		return (List<T>) stream.collect(Collectors.toList());
 	}
 
