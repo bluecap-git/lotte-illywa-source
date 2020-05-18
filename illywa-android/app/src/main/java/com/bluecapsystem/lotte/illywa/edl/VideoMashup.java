@@ -74,7 +74,7 @@ public class VideoMashup extends Mashup<VideoClip> {
 	 */
 	private void updateEndTc() {
 		// clip 이 변경 되었을 경우 end 시간을 설정해 준다
-		final Long duration = TimeUtils.toLong(this.clipStartTC) - TimeUtils.toLong(this.clipEndTC);
+		final Long duration = TimeUtils.toLong(this.clipEndTC) - TimeUtils.toLong(this.clipStartTC);
 		final Long end = TimeUtils.toLong(this.getStartTC()) + duration;
 		this.setEndTC(TimeUtils.toTimeCode(end));
 
