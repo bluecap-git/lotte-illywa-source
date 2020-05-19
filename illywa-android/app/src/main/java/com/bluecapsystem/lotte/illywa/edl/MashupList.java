@@ -1,7 +1,7 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
 import androidx.annotation.Nullable;
-import com.bluecapsystem.lotte.illywa.edl.utils.TimeUtils;
+import com.bluecapsystem.lotte.illywa.common.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;

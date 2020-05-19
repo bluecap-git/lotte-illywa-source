@@ -1,6 +1,6 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
-import com.bluecapsystem.lotte.illywa.edl.utils.IDGenerator;
+import com.bluecapsystem.lotte.illywa.common.utils.IDGenerator;
 import com.google.gson.annotations.Expose;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

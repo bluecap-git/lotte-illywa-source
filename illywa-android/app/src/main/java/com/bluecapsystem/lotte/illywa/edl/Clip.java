@@ -1,6 +1,8 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
+import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Map;
 
@@ -12,7 +14,7 @@ public abstract class Clip {
 	/** clip id */
 	@Expose
 	private String clipId;
-	
+
 	/** clip file path */
 	@Expose
 	private String filePath;
@@ -25,6 +27,13 @@ public abstract class Clip {
 	/** default construct */
 	public Clip(final String clipId) {
 		this.clipId = clipId;
+	}
+
+
+	@NonNull
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 	/**

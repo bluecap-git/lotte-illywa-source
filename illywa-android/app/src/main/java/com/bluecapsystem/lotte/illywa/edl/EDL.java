@@ -1,6 +1,8 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
 import androidx.annotation.NonNull;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -33,6 +35,16 @@ public class EDL {
 	public EDL(final String edlId) {
 		clips = new ClipList();
 		layers = new LayerList();
+	}
+
+	/**
+	 * EDL 을 json 형식으로 가져온다
+	 *
+	 * @return edl json format string
+	 */
+	public String toJson() {
+		final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		return gson.toJson(this);
 	}
 
 	@NonNull

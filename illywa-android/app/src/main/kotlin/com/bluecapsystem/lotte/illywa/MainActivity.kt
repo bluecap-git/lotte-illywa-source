@@ -3,8 +3,8 @@ package com.bluecapsystem.lotte.illywa
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.bluecapsystem.lotte.illywa.common.utils.TimeUtils
 import com.bluecapsystem.lotte.illywa.edl.EDLBuilder
-import com.bluecapsystem.lotte.illywa.edl.utils.TimeUtils
 import com.bluecapsystem.lotte.illywa.sample.Sample
 
 class MainActivity : AppCompatActivity() {

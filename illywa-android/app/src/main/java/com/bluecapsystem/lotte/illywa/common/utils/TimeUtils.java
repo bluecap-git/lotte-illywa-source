@@ -1,4 +1,4 @@
-package com.bluecapsystem.lotte.illywa.edl.utils;
+package com.bluecapsystem.lotte.illywa.common.utils;
 
 import org.apache.commons.lang3.time.DurationFormatUtils;
 

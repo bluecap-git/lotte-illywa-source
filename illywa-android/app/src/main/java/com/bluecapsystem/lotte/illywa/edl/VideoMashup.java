@@ -1,7 +1,7 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
 import androidx.annotation.NonNull;
-import com.bluecapsystem.lotte.illywa.edl.utils.TimeUtils;
+import com.bluecapsystem.lotte.illywa.common.utils.TimeUtils;
 import com.google.gson.annotations.Expose;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

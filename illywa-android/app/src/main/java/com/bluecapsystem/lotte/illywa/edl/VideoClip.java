@@ -1,7 +1,7 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
-import com.bluecapsystem.lotte.illywa.edl.utils.IDGenerator;
-import com.bluecapsystem.lotte.illywa.edl.utils.TimeUtils;
+import com.bluecapsystem.lotte.illywa.common.utils.IDGenerator;
+import com.bluecapsystem.lotte.illywa.common.utils.TimeUtils;
 import com.google.gson.annotations.Expose;
 
 import java.util.Map;
@@ -20,7 +20,7 @@ public class VideoClip extends Clip {
 		super(IDGenerator.createID(Clip.PREFIX_CLIP_ID));
 		this.setType(ClipTypes.Video)
 				.setFilePath(filePath);
-				
+
 		this.startTC = TimeUtils.DEFAULT_TC;
 		this.startTC = TimeUtils.DEFAULT_TC;
 	}
