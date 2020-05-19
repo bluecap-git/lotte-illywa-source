@@ -67,11 +67,6 @@ public class ProjectTest {
 			// mashup 을 추가 한다
 			layer.getMashups().add(mashup);
 		});
-
-		System.out.println("EDL 정보 저장");
-		System.out.println(newTag.saveEDL().getEdlJson());
-
-
 	}
 
 
