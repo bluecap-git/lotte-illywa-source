@@ -38,9 +38,6 @@ public class EDLBuilder {
 
 		final Layer basisLayer = newLayer(LayerTypes.Video);
 		newEdl.getLayers().add(basisLayer);
-		newEdl.getLayers().add(newLayer(LayerTypes.Audio));
-		newEdl.getLayers().add(newLayer(LayerTypes.Subscript));
-		newEdl.getLayers().add(newLayer(LayerTypes.Image));
 
 		// 기초가 기반이 되는 Layer 를 설정 한다
 		newEdl.getLayers().setBasisLayer(basisLayer);
@@ -102,6 +99,7 @@ public class EDLBuilder {
 				.orElse(clip);
 	}
 
+
 	/**
 	 * {@link ImageClip} 을 생성 한다
 	 *
@@ -138,15 +136,22 @@ public class EDLBuilder {
 	}
 
 
+	/**
+	 * 비디오 mashup 을 생성 한다
+	 *
+	 * @param clip  원본 clip 정보
+	 * @param start clip 에서 trim 항 시작점
+	 * @param end   clip 에서 trim 할 끝점
+	 * @return 생성된 {@link VideoMashup} 객체
+	 */
 	public VideoMashup newVideoMashup( //
 			final VideoClip clip, final String start, final String end) {
-
 
 		final VideoMashup newMashup = new VideoMashup(clip);
 
 		newMashup.setClipStartTC(start);
 		newMashup.setClipEndTC(end);
-		newMashup.setStartTC("00:00:00.000");
+		newMashup.setStartTC(TimeUtils.DEFAULT_TC);
 		newMashup.setEndTC(TimeUtils.getDuration(start, end));
 
 		return Optional.ofNullable(preCreatedListener) //
@@ -154,17 +159,26 @@ public class EDLBuilder {
 				.orElse(newMashup);
 	}
 
+
 	/**
 	 * 새로운 Layer 를 생성 한다
 	 *
 	 * @param type 생헝 하려는 layer 유형
-	 * @param <T>  return Type
 	 * @return layer
 	 */
-	public <T extends Layer> T newLayer(final LayerTypes type) {
-		final Layer newLayer = new Layer(type);
+	public Layer newLayer(final LayerTypes type) {
 
-		return (T) Optional.ofNullable(preCreatedListener) //
+		final Class cls = Optional.of(type).map(t -> {
+			switch (t) {
+				case Video:
+					return VideoMashup.class;
+				default:
+					return Mashup.class;
+			}
+		}).get();
+
+		final Layer newLayer = new Layer(type, cls);
+		return Optional.ofNullable(preCreatedListener) //
 				.map(event -> event.preLayerCreated(newLayer)) //
 				.orElse(newLayer);
 	}

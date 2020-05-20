@@ -19,7 +19,6 @@ public class Mashup<T extends Clip> {
 	@Expose
 	private String mashupId;
 
-
 	/** 시작 시간 */
 	@Expose
 	private String startTC;

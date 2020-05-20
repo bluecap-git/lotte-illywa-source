@@ -23,11 +23,18 @@ public class Layer {
 	/**
 	 * @param type Layer 유형
 	 */
-	public Layer(final LayerTypes type) {
+	public <T extends Mashup> Layer(final LayerTypes type, final Class<T> mashupType) {
 		this.layerId = IDGenerator.createID(Layer.PREFIX_ID);
 		this.type = type;
 
-		this.mashups = new MashupList();
+		switch (type) {
+			case Video:
+				this.mashups = new VideoMashupList();
+				break;
+			default:
+				this.mashups = new MashupList<T>();
+				break;
+		}
 	}
 
 	@Override
@@ -54,7 +61,7 @@ public class Layer {
 	/**
 	 * @return mashup 목록
 	 */
-	public MashupList getMashups() {
-		return mashups;
+	public <R extends MashupList> R getMashups() {
+		return (R) mashups;
 	}
 }

@@ -77,6 +77,5 @@ public class VideoMashup extends Mashup<VideoClip> {
 		final Long duration = TimeUtils.toLong(this.clipEndTC) - TimeUtils.toLong(this.clipStartTC);
 		final Long end = TimeUtils.toLong(this.getStartTC()) + duration;
 		this.setEndTC(TimeUtils.toTimeCode(end));
-
 	}
 }

@@ -1,5 +1,6 @@
 package com.bluecapsystem.lotte.illywa;
 
+import com.bluecapsystem.lotte.illywa.common.event.EventExecutor;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -45,6 +46,7 @@ public class MatinTest {
 	}
 
 	@Test
+	@Ignore
 	public void ThreadQueueTest_Callable() {
 
 		// thread 2 개인 서비스를 생성 한다
@@ -73,14 +75,12 @@ public class MatinTest {
 
 	}
 
-
 	@Test
 	@Ignore
 	public void ThreadQueueTest_Runnable() {
 
 		// thread 2 개인 서비스를 생성 한다
 		final ExecutorService executorService = Executors.newFixedThreadPool(2);
-
 
 		final Runnable runner = () -> {
 			// 스레드 총 개수 및 작업 스레드 이름 출력
@@ -108,5 +108,70 @@ public class MatinTest {
 
 	}
 
+	@FunctionalInterface
+	interface MashupEvent {
+		void post(int var1);
+	}
+
+	@FunctionalInterface
+	interface MashupEvent2 {
+		void post(int var1);
+	}
+
+
+	@Test
+	public void Sample() {
+
+		final EventExecutor event = new EventExecutor();
+
+		final List<Runnable> events = new ArrayList<>();
+		IntStream.range(0, 10)
+				.forEach(index -> {
+					final Runnable runner;
+
+					final MashupEvent e;
+					switch (index % 2) {
+						case 1:
+							e = new Exec1();
+							break;
+						default:
+							e = new Exec2();
+							break;
+					}
+					events.add(() -> {
+						e.post(index);
+					});
+				});
+
+		EventExecutor.execPost(events);
+		System.out.println("submit");
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (final Throwable th) {
+			th.printStackTrace();
+		}
+
+		// 프로그램 종료시 반듯이 해줘야 한다
+		EventExecutor.shutdown();
+	}
+
+
+	class Exec1 implements MashupEvent, MashupEvent2 {
+		@Override
+		public void post(final int var1) {
+			System.out.println("---------- " + var1);
+		}
+	}
+
+
+	class Exec2 implements MashupEvent {
+
+		@Override
+		public void post(final int var1) {
+
+			System.out.println("============== " + var1);
+
+		}
+	}
 
 }

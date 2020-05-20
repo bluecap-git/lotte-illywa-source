@@ -29,9 +29,9 @@ public class MashupFindCondition {
 	 *
 	 * @return Mashup 검색 조건
 	 */
-	public Set<Predicate<Mashup>> getPredicates() {
+	public <T extends Mashup> Set<Predicate<T>> getPredicates() {
 
-		final Set<Predicate<Mashup>> predicates = new HashSet<>();
+		final Set<Predicate<T>> predicates = new HashSet<>();
 
 		// ID 검색 조건
 		Optional.ofNullable(mashupId)

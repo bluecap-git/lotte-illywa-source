@@ -1,6 +1,11 @@
 package com.bluecapsystem.lotte.illywa.edl;
 
+import androidx.annotation.Nullable;
+import com.bluecapsystem.lotte.illywa.common.event.EventExecutor;
+import com.bluecapsystem.lotte.illywa.common.utils.ExceptionUtil;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -19,6 +24,86 @@ public class LayerList extends ArrayList<Layer> {
 	 * 기본이 되는 Layer
 	 */
 	private Layer basisLayer;
+
+	/** 관리 하는 edl 정보 */
+	private EDL edl;
+
+	@FunctionalInterface
+	public interface LayerPostEvent {
+		void post(EDL edl, Layer obj);
+	}
+
+	/** clip added event callback list */
+	private final Collection<LayerPostEvent> postAdded;
+
+	/** clip removed event callback list */
+	private final Collection<LayerPostEvent> postRemoved;
+
+	public LayerList() {
+		super();
+		postAdded = new ArrayList<>();
+		postRemoved = new ArrayList<>();
+	}
+
+	/**
+	 * 추가 이벤트 callbak 함추를 설정 한다
+	 *
+	 * @param event 이벤트 처리 함수
+	 * @return this
+	 */
+	public LayerList addEventPostAdded(final LayerPostEvent event) {
+		this.postAdded.add(event);
+		return this;
+	}
+
+	/**
+	 * 삭제 이벤트 callback 함수를 설정 한다
+	 *
+	 * @param event 이벤트 처리 함수
+	 * @return this
+	 */
+	public LayerList addEventPostRemoved(final LayerPostEvent event) {
+		this.postAdded.add(event);
+		return this;
+	}
+
+
+	private synchronized void sendLayerEvent(
+			final EDL edl,
+			final Layer clip,
+			final Collection<LayerList.LayerPostEvent> callbacks) {
+		final List<Runnable> runner = new ArrayList<>();
+		callbacks.forEach(c -> {
+			runner.add(() -> {
+				c.post(edl, clip);
+			});
+		});
+		EventExecutor.execPost(runner);
+	}
+
+
+	@Override
+	public boolean add(final Layer obj) {
+		this.add(this.size(), obj);
+		return true;
+	}
+
+	@Override
+	public void add(final int index, final Layer obj) {
+		super.add(index, obj);
+		this.sendLayerEvent(edl, obj, postAdded);
+	}
+
+	@Override
+	public Layer remove(final int index) {
+		final Layer clip = super.remove(index);
+		this.sendLayerEvent(edl, clip, postRemoved);
+		return clip;
+	}
+
+	public boolean remove(@Nullable final Clip clip) {
+		return this.remove(this.indexOf(clip)) != null;
+	}
 
 
 	/**
@@ -67,6 +152,23 @@ public class LayerList extends ArrayList<Layer> {
 	 */
 	public LayerList setBasisLayer(final Layer basisLayer) {
 		this.basisLayer = basisLayer;
+		return this;
+	}
+
+	/**
+	 * @return 클립을 관리하는 edl
+	 */
+	public EDL getEdl() {
+		return edl;
+	}
+
+
+	/**
+	 * @param edl
+	 * @return
+	 */
+	public LayerList setEdl(final EDL edl) {
+		this.edl = this.edl == null ? edl : ExceptionUtil.throw_("edl is already set");
 		return this;
 	}
 }

@@ -23,6 +23,12 @@ public class EDLBuilderTest {
 		this.builder = new EDLBuilder();
 		this.edl = this.builder.newEDL();
 
+
+		// event 처리 방식
+		this.edl.getClips().addEventPostAdded((e, clip) -> {
+			System.out.println(" EDL (" + e.getEdlId() + ") 에 클립이 추가 되었습니다. => " + clip.getClipId());
+		});
+
 	}
 
 
@@ -59,13 +65,12 @@ public class EDLBuilderTest {
 
 	@Test
 	public void mashupCreateTest() {
+		// 클립을 생성한다
 		this.clipCreateTest();
 
-		final Layer videoLayer = this.edl.getLayers() //
-				.findList(new LayerFindCondition().setTypes(Sets.newSet(LayerTypes.Video))) //
-				.stream().findFirst().orElseGet(null);
+		// edl 을 생성하면 기본 VideoLayer 를 추가해 준다
+		final Layer videoLayer = this.edl.getLayers().getBasisLayer();
 		Assert.assertNotNull("video layer is null", videoLayer);
-
 
 		// mashup 추가
 		this.edl.getClips() //
@@ -78,6 +83,7 @@ public class EDLBuilderTest {
 
 
 		// mashup 삽입
+		// video mashup 의 경우 삽입하는 mashup 뒤의 모든 항목을 추가되는 mashup 시간 만큼 뒤로 미룬다
 		this.edl.getClips() //
 				.findList(new ClipFindCondition().setTypes(Sets.newSet(ClipTypes.Video, ClipTypes.VideoImage))) //
 				.stream().forEach(clip -> {
@@ -85,6 +91,12 @@ public class EDLBuilderTest {
 			final VideoMashup mashup = this.builder.newVideoMashup(video, video.getStartTC(), video.getEndTC());
 			videoLayer.getMashups().add(0, mashup);
 		});
+
+
+		// mashup 을 삭제 한다
+		this.edl.getLayers().getBasisLayer().getMashups().remove(0);
+		Assert.assertEquals("Mashup size is too many", //
+				3, this.edl.getLayers().getBasisLayer().getMashups().size());
 
 	}
 
@@ -108,8 +120,7 @@ public class EDLBuilderTest {
 		public <T extends Clip> T preClipCreated(final T clip) {
 
 			System.out.println("=======!!!!! preClipCreated ");
-
-
+			// clip 생성 후 해당 클립의 meta 정보를 셋팅해 줘야 한다
 			switch (clip.getType()) {
 				case Video:
 				case VideoImage:
