@@ -33,6 +33,7 @@ public class EDL {
 	 * @param edlId set the edl id
 	 */
 	public EDL(final String edlId) {
+		this.edlId = edlId;
 		clips = new ClipList().setEdl(this);
 		layers = new LayerList().setEdl(this);
 	}

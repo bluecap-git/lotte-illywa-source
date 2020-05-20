@@ -18,15 +18,22 @@ public class EDLBuilderTest {
 
 	@Before
 	public void init() {
-		EDLBuilder.setPreCreatedListener(new BuilderEvents());
+
 		ToStringBuilder.setDefaultStyle(ToStringStyle.JSON_STYLE);
+
+		// builder 이벤트 추가
+		EDLBuilder.setPreCreatedListener(new BuilderEvents());
+
 		this.builder = new EDLBuilder();
 		this.edl = this.builder.newEDL();
 
-
-		// event 처리 방식
+		// edl post event 처리 방식
 		this.edl.getClips().addEventPostAdded((e, clip) -> {
-			System.out.println(" EDL (" + e.getEdlId() + ") 에 클립이 추가 되었습니다. => " + clip.getClipId());
+			System.out.println(" EDL (" + e.getEdlId() + ") 에 클립이 추가 !! => " + clip.getClipId());
+		});
+
+		this.edl.getClips().addEventPostRemoved((e, clip) -> {
+			System.out.println(" EDL (" + e.getEdlId() + ") 에 클립이 삭제 !! => " + clip.getClipId());
 		});
 
 	}
