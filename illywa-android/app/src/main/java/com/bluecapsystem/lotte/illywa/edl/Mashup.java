@@ -48,7 +48,7 @@ public class Mashup<T extends Clip> {
 	 * @param clip 원본 클립 정보
 	 */
 	public Mashup(final T clip, final MashupTypes type) {
-		this.clipId = IDGenerator.createID(Mashup.PREFIX_ID);
+		this.mashupId = IDGenerator.createID(Mashup.PREFIX_ID);
 		this.clip = clip;
 		this.clipId = clip.getClipId();
 		this.type = type;
