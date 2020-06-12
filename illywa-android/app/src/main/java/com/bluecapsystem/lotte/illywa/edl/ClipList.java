@@ -35,6 +35,9 @@ public class ClipList extends ArrayList<Clip> {
 	private final Collection<ClipPostEvent> postRemoved;
 
 
+
+
+
 	public ClipList() {
 		super();
 		this.postAdded = new ArrayList<>();
@@ -96,8 +99,23 @@ public class ClipList extends ArrayList<Clip> {
 		return clip;
 	}
 
-	public boolean remove(@Nullable final Clip clip) {
-		return this.remove(this.indexOf(clip)) != null;
+	/**
+	 * clip 을 삭제 한다
+	 * @param clipId
+	 * @return
+	 */
+	public boolean remove(String clipId){
+		final Clip clip = findOne(clipId);
+
+		if(clip == null ){
+			return false;
+		}
+
+		boolean ret = this.remove(clip);
+		if(ret ) {
+			this.sendClipEvent(edl, clip, postRemoved);
+		}
+		return ret;
 	}
 
 	/**
