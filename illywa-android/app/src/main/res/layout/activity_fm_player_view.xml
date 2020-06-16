@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".fmp.FMPlayerView">
+
+
+	<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingLeft="10dp"
+			android:paddingTop="10dp"
+			android:paddingRight="10dp"
+			android:paddingBottom="10dp"
+			android:visibility="visible">
+
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+
+			<LinearLayout
+					android:layout_width="390dp"
+					android:layout_height="57dp"
+					android:orientation="horizontal">
+
+				<EditText
+						android:id="@+id/tx_path"
+						android:layout_width="290dp"
+						android:layout_height="55dp"
+						android:hint="file path"
+						android:inputType="textUri"
+						android:singleLine="false"
+						android:text="/sdcard/Download/sample-video.mp4" />
+
+				<Button
+						android:id="@+id/btn_play"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="9dp"
+						android:text="play" />
+
+			</LinearLayout>
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal">
+
+				<Button
+						android:id="@+id/btn_pause"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:text="pause" />
+
+				<Button
+						android:id="@+id/btn_stop"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:text="stop" />
+
+				<Button
+						android:id="@+id/btn_seek"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="1"
+						android:text="seek" />
+			</LinearLayout>
+
+			<FrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="653dp">
+
+				<SurfaceView
+						android:id="@+id/surfaceview"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_weight="1" />
+			</FrameLayout>
+		</LinearLayout>
+
+	</RelativeLayout>
+
+</LinearLayout>

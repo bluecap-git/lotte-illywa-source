@@ -35,6 +35,13 @@ android {
 
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -51,6 +58,9 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.9'
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation 'com.google.code.gson:gson:2.8.5'
+
+
+    compile 'com.bluecapsystem.fmPlayer:FmPlayer-release:1.0@aar'
 
 
 }
